@@ -10,6 +10,6 @@ const main = ctx => {
 
 app.use(main);
 
-app.listen(8001);
+app.listen(7001);
 
-console.log('server is running at 8001');
+console.log('server is running at 7001');
