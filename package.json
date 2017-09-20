@@ -12,7 +12,9 @@
   "author": "liuzhuang",
   "license": "ISC",
   "devDependencies": {
+    "axios": "^0.16.2",
     "koa": "^2.3.0",
+    "moment": "^2.18.1",
     "sha1": "^1.1.1"
   }
 }
