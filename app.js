@@ -36,6 +36,6 @@ const check = ctx => {
 app.use(route.get('/', main));
 app.use(route.get('/check', check));
 
-app.listen(7001);
+app.listen(8080);
 
-console.log('server is running at 7001');
+console.log('server is running at 8080');
