@@ -7,7 +7,7 @@ const accessToken = require('./middleware/accessToken.js');
 const logger = require('./middleware/logger.js');
 // const reply = require('./middleware/replay.js');
 // const xmlParse = require('./middleware/xmlParse.js');
-var json2xml = require('json2xml');
+// var json2xml = require('json2xml');
 
 const app = new Koa();
 
