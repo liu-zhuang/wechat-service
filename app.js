@@ -32,8 +32,7 @@ app.use(accessToken.getAccessToken);
 
 app.use((ctx, next) => {
 	if(ctx.method === 'POST' && ctx.is('text/xml')) {
-		ctx.res.setHeader('Content-Type', 'application/xml')
-		ctx.res.end(result)
+		ctx.response.body = 'success';
 	}
 });
 
