@@ -13,11 +13,11 @@ module.exports = option => {
 		let sha1 = Sha(sort);
 
 		if (sha1 === signature) {
-			ctx.response.body = echostr;
+			// ctx.response.body = echostr;
 			next();
 		} else {
 			console.log(`${ctx.url} is not from wechat server`);
-			ctx.response.body = `${ctx.url} is not from wechat server`;
+			// ctx.response.body = `${ctx.url} is not from wechat server`;
 			next(); // 线上要注释掉 非微信发来的请求不能继续向下走
 		}
 	}

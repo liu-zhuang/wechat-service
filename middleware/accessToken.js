@@ -18,7 +18,7 @@ const getAccessToken = async (ctx, next) => {
 	await axios.get(url)
 	.then(res => {
 		console.log(res.data);
-		ctx.response.body += res.data;
+		// ctx.response.body += res.data;
 	});
 	next();
 };
