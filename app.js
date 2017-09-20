@@ -32,7 +32,7 @@ app.use(accessToken.getAccessToken);
 
 app.use((ctx, next) => {
 	if(ctx.method === 'POST' && ctx.is('text/xml')) {
-		return '';
+		return 'success';
 	}
 });
 
