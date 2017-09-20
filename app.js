@@ -7,6 +7,7 @@ const accessToken = require('./middleware/accessToken.js');
 const logger = require('./middleware/logger.js');
 // const reply = require('./middleware/replay.js');
 // const xmlParse = require('./middleware/xmlParse.js');
+var json2xml = require('json2xml');
 
 const app = new Koa();
 
@@ -14,12 +15,20 @@ const config = {
 	token: 'yebaomemeda'
 };
 
+app.use((ctx, next) => {
+	if(ctx.method === 'POST' && ctx.is('text/xml')) {
+		ctx.response.type = 'application/xml';
+	}
+	next();
+});
+
+
 app.use(xmlParser());
 
 app.use(bodyParser());
 
 app.use((ctx, next) =>{
-	ctx.body = ctx.request.body;
+	// ctx.body = ctx.request.body;
 	console.log(ctx.body);
 	next();
 });
@@ -30,13 +39,13 @@ app.use(validate(config));
 
 app.use(accessToken.getAccessToken);
 
+
 app.use((ctx, next) => {
 	if(ctx.method === 'POST' && ctx.is('text/xml')) {
-		ctx.response.type = 'text/xml';
 		ctx.response.body = 'success';
 	}
+	next();
 });
-
 // app.use(reply);
 // app.use(xmlParse());
 
