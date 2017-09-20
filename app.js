@@ -15,37 +15,30 @@ const config = {
 	token: 'yebaomemeda'
 };
 
-app.use((ctx, next) => {
-	if(ctx.method === 'POST' && ctx.is('text/xml')) {
-		ctx.response.type = 'application/xml';
-	}
-	next();
-});
 
 
-app.use(xmlParser());
+// app.use(xmlParser());
 
-app.use(bodyParser());
+// app.use(bodyParser());
 
-app.use((ctx, next) =>{
-	// ctx.body = ctx.request.body;
-	console.log(ctx.body);
-	next();
-});
+// app.use((ctx, next) =>{
+// 	// ctx.body = ctx.request.body;
+// 	console.log(ctx.body);
+// 	next();
+// });
 
-app.use(logger);
+// app.use(logger);
 
-app.use(validate(config));
+// app.use(validate(config));
 
-app.use(accessToken.getAccessToken);
+// app.use(accessToken.getAccessToken);
 
 
 app.use((ctx, next) => {
 	if(ctx.method === 'POST' && ctx.is('text/xml')) {
-		ctx.response.body = 'success';
-		return;
+		ctx.res.setHeader('Content-Type', 'application/xml');
+		ctx.res.end('success');
 	}
-	next();
 });
 // app.use(reply);
 // app.use(xmlParse());
