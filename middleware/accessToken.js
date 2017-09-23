@@ -10,17 +10,27 @@ const api = {
 	accessToken: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential'
 };
 
-const getAccessToken = async (ctx, next) => {
+const getAccessToken = (ctx, next) => {
 	devLog('getAccessToken:type:', ctx.response.type);
 	const appid = config.appid;
 	const appsecret = config.secret;
 	let url = api.accessToken + `&appid=${appid}&secret=${appsecret}`;
-	await axios.get(url)
+	devLog('axios:type:', JSON.stringify(ctx.response));
+	axios.get(url)
 	.then(res => {
-		devLog(res.data);
-		// ctx.response.body += res.data;
-	});
-	return next();
+		// devLog(res.data);
+		// devLog('axios:type:', JSON.stringify(ctx.response));
+		// ctx.response.type = 'json';
+		//  ctx.response.body += res.data;
+		// devLog('axios:type:temp:', JSON.stringify(temp.response));
+		// ctx = temp;
+		// return next();
+		devLog(res);
+		return next();
+	})
+	.catch(err => {
+		devLog(err);
+	})
 };
 
 

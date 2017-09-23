@@ -22,25 +22,17 @@ devLog('%o booting', 'wechat service');
 const wechatconfig = {
 	token: 'yebaomemeda'
 };
+
 // 将request.body解析为xml
 app.use(xmlParser());
 // 解析request.body
 app.use(bodyParser());
 
-app.use((ctx, next) =>{
-	devLog(ctx.request.body);
-	next();
-});
-
 // app.use(logger);
 
 app.use(validate(wechatconfig));
 
-app.use(accessToken.getAccessToken);
-app.use(ctx=>{
-	ctx.response.body ='success';
-	devLog('success');
-})
+// app.use(accessToken.getAccessToken);
 app.listen(config.port);
 
 // console.log('server is running at ' + config.port);
