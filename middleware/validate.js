@@ -3,6 +3,7 @@ const Sha = require('sha1');
 const devLog = require('debug')('dev'); 
 var json2xml = require('json2xml');
 const ContentMessage = require('../util/Message').ContentMessage;
+const logUtil = require('../util/logUtil');
 
 module.exports = option => {
 	const token = option.token;
@@ -11,12 +12,15 @@ module.exports = option => {
 		let {signature, timestamp, nonce, echostr} = ctx.query;
 		let sort = [token, timestamp, nonce].sort().join('');
 		let sha1 = Sha(sort);
-		if (sha1 !== signature) {
+		logUtil.logError(ctx, sha1, +new Date());
+		if (sha1 === signature) {
+			logUtil.logError(ctx, sha1, +new Date());
 			// 如果是方法，把echostr原样返回即可
 			if (ctx.method === 'GET') {
 				ctx.response.body = echostr;
 				return next();
 			} else if (ctx.method === 'POST') {
+				logUtil.logError(ctx, 'enter post', +new Date());
 				// 处理请求
 				let msg = ctx.request.body.xml;
 				devLog(msg.xml);
@@ -33,6 +37,8 @@ module.exports = option => {
 				let retMsgXml = json2xml(retMsgJson);
 				ctx.type = 'appliction/xml';
 				ctx.body = retMsgXml;
+				logUtil.logResponse(ctx, + new Date());
+				devLog('log');
 				return next();
 			} else {
 				
