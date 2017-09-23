@@ -1,7 +1,13 @@
+// node_modules
 const Koa = require('koa');
 const Sha = require('sha1');
 const xmlParser = require('koa-xml-body');
 const bodyParser = require('koa-bodyparser');
+const devLog = require('debug')('dev'); // debugger的namespace是dev 命令行里DEBUG=dev或者*的时候才会输出
+const errLog = require('debug')('err'); //错误日志
+// 配置文件
+const config = require('./config/config');
+// 自定义中间件
 const validate = require('./middleware/validate.js');
 const accessToken = require('./middleware/accessToken.js');
 const logger = require('./middleware/logger.js');
@@ -9,40 +15,33 @@ const logger = require('./middleware/logger.js');
 // const xmlParse = require('./middleware/xmlParse.js');
 // var json2xml = require('json2xml');
 
+// 实例化koa
 const app = new Koa();
-
-const config = {
+devLog('%o booting', 'wechat service');
+// 参数
+const wechatconfig = {
 	token: 'yebaomemeda'
 };
+// 将request.body解析为xml
+app.use(xmlParser());
+// 解析request.body
+app.use(bodyParser());
 
-
-
-// app.use(xmlParser());
-
-// app.use(bodyParser());
-
-// app.use((ctx, next) =>{
-// 	// ctx.body = ctx.request.body;
-// 	console.log(ctx.body);
-// 	next();
-// });
+app.use((ctx, next) =>{
+	devLog(ctx.request.body);
+	next();
+});
 
 // app.use(logger);
 
-// app.use(validate(config));
+app.use(validate(wechatconfig));
 
-// app.use(accessToken.getAccessToken);
+app.use(accessToken.getAccessToken);
+app.use(ctx=>{
+	ctx.response.body ='success';
+	devLog('success');
+})
+app.listen(config.port);
 
-
-app.use((ctx, next) => {
-	if(ctx.method === 'POST' && ctx.is('text/xml')) {
-		ctx.res.setHeader('Content-Type', 'application/xml');
-		ctx.res.end('success');
-	}
-});
-// app.use(reply);
-// app.use(xmlParse());
-
-app.listen(8080);
-
-console.log('server is running at 8080');
+// console.log('server is running at ' + config.port);
+devLog('server is running at ' + config.port);
