@@ -21,6 +21,7 @@ module.exports = {
         }
     },
     "categories": {
-    	default: { appenders: ['resLogger'], level: 'info' }
+    	default: { appenders: ['resLogger'], level: 'info' },
+    	errorLogger: { appenders: ['errorLogger'], level: 'info' }
     }
 }
