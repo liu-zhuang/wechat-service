@@ -27,11 +27,13 @@ module.exports = option => {
 				let contentMsgInfo = new ContentMessage(msg.ToUserName[0],msg.FromUserName[0], msg.CreateTime[0], msg.MsgType[0], msg.MsgId[0], msg.Content[0]);
 				devLog(contentMsgInfo);
 				let retMsgJson = {
-					"ToUserName": contentMsgInfo.FromUserName,
-					"FromUserName": contentMsgInfo.ToUserName,
-					"CreateTime": + new Date(),
-					"MsgType": 'text',
-					"Content": '收到，谢谢！'
+					"xml": {
+						"ToUserName": contentMsgInfo.FromUserName,
+						"FromUserName": contentMsgInfo.ToUserName,
+						"CreateTime": + new Date(),
+						"MsgType": 'text',
+						"Content": '收到，谢谢！'
+					}
 				};
 				devLog(retMsgJson);
 				let retMsgXml = json2xml(retMsgJson);
