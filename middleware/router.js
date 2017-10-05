@@ -1,6 +1,7 @@
 const Router =  require('koa-router');
 const Sha = require('sha1');
 const options = require('../config/options');
+const ContentMessage = require('../util/Message').ContentMessage;
 
 const router = app => {
 	const router = new Router();
@@ -20,6 +21,31 @@ const router = app => {
 				msg: 'validate fail'
 			});
 		}
+	});
+
+	router.post('/wechat-get', (ctx, next) => {
+		// 处理请求
+		let msg = ctx.request.body.xml;
+		app.logger.debug({
+			msg
+		});
+		let contentMsgInfo = new ContentMessage(msg.ToUserName[0],msg.FromUserName[0], msg.CreateTime[0], msg.MsgType[0], msg.MsgId[0], msg.Content[0]);
+		app.logger.debug({
+			contentMsgInfo
+		});		
+		let retMsgJson = {
+			"xml": {
+				"ToUserName": contentMsgInfo.FromUserName,
+				"FromUserName": contentMsgInfo.ToUserName,
+				"CreateTime": + new Date(),
+				"MsgType": 'text',
+				"Content": '收到，谢谢！'
+			}
+		};
+		var json2xml = require('json2xml');
+		let retMsgXml = json2xml(retMsgJson);
+		ctx.body = retMsgXml;
+		next();
 	});
 
 	app.use(router.routes());
