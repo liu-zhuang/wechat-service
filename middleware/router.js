@@ -10,6 +10,9 @@ const router = app => {
 		let sha1 = Sha(sort);
 		if (sha1 === signature) {
 			ctx.response.body = echostr;
+			app.debug({
+				msg: 'validate success';
+			})
 			next();
 		} else {
 
