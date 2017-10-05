@@ -7,7 +7,6 @@ const logUtil = require('../util/logUtil');
 
 module.exports = option => {
 	const token = option.token;
-	
 	return (ctx, next) => {
 		let {signature, timestamp, nonce, echostr} = ctx.query;
 		let sort = [token, timestamp, nonce].sort().join('');
@@ -37,7 +36,6 @@ module.exports = option => {
 				};
 				devLog(retMsgJson);
 				let retMsgXml = json2xml(retMsgJson);
-				ctx.type = 'appliction/xml';
 				ctx.body = retMsgXml;
 				logUtil.logResponse(ctx, + new Date());
 				devLog('log');

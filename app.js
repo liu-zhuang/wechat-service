@@ -1,39 +1,43 @@
 // node_modules
 const Koa = require('koa');
-const Sha = require('sha1');
-const xmlParser = require('koa-xml-body');
-const bodyParser = require('koa-bodyparser');
 const devLog = require('debug')('dev'); // debugger的namespace是dev 命令行里DEBUG=dev或者*的时候才会输出
-const errLog = require('debug')('err'); //错误日志
-// 配置文件
-const config = require('./config/config');
-// 自定义中间件
-const validate = require('./middleware/validate.js');
-const accessToken = require('./middleware/accessToken.js');
-const logger = require('./middleware/logger.js');
-// const reply = require('./middleware/replay.js');
-// const xmlParse = require('./middleware/xmlParse.js');
-// var json2xml = require('json2xml');
 
+const R = require('ramda');
+const path = require('path');
+ 
+ // set middleware                                                          
+let MIDDLEWARE = ['onerror', 'bodyparser', 'xmlBody', 'cors', 'helmet', 'router'];
+
+// 定义构造函数
+class Server {
+	constructor () {
+		this.app = new Koa();
+		// log4js
+		const logger = require('./util/logUtil');
+		this.app.logger = logger;
+		this.UseMiddleWare(this.app)(MIDDLEWARE);
+		// 配置文件
+		const config = require('./config/config');
+		this.app.config = config;
+	}
+	UseMiddleWare (app) {
+		return R.map(R.compose(
+			m => m(app),
+			require,
+			m => path.resolve(__dirname, './middleware', `${m}`)
+			));
+	}
+	async Start () {
+		this.app.logger.debug({
+			msg: 'botting server..a.'
+		});
+		this.app.listen(this.app.config.port);
+	}
+}
 // 实例化koa
-const app = new Koa();
+const server = new Server();
+// 启动服务
+server.Start();
 devLog('%o booting', 'wechat service');
-// 参数
-const wechatconfig = {
-	token: 'yebaomemeda'
-};
 
-// 将request.body解析为xml
-app.use(xmlParser());
-// 解析request.body
-app.use(bodyParser());
-
-// app.use(logger);
-
-app.use(validate(wechatconfig));
-
-// app.use(accessToken.getAccessToken);
-app.listen(config.port);
-
-// console.log('server is running at ' + config.port);
-devLog('server is running at ' + config.port);
+devLog('server is running at ' + server.app.config.port);

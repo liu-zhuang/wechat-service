@@ -14,6 +14,5 @@ class ContentMessage extends Message {
 	}
 }
 module.exports = {
-	Message,
 	ContentMessage
 }
