@@ -27,11 +27,11 @@ const router = app => {
 		// 处理请求
 		let msg = ctx.request.body.xml;
 		app.logger.debug({
-			msg
+			body: JSON.stringify(msg)
 		});
 		let contentMsgInfo = new ContentMessage(msg.ToUserName[0],msg.FromUserName[0], msg.CreateTime[0], msg.MsgType[0], msg.MsgId[0], msg.Content[0]);
 		app.logger.debug({
-			contentMsgInfo
+			contentMsgInfo: JSON.stringify(contentMsgInfo)
 		});		
 		let retMsgJson = {
 			"xml": {
