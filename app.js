@@ -6,7 +6,7 @@ const R = require('ramda');
 const path = require('path');
  
  // set middleware                                                          
-let MIDDLEWARE = ['onerror', 'bodyparser', 'xmlBody', 'cors', 'helmet', 'router'];
+let MIDDLEWARE = ['onerror', 'xmlBody', 'bodyparser', 'cors', 'helmet', 'router'];
 
 // 定义构造函数
 class Server {
