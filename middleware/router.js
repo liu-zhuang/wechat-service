@@ -44,25 +44,46 @@ const router = app => {
 				// 		"Content": '收到，谢谢！'
 				// 	}
 				// };
-				let retMsgJson = {
-					"xml": {
-						"ToUserName": contentMsgInfo.FromUserName,
-						"FromUserName": contentMsgInfo.ToUserName,
-						"CreateTime": + new Date(),
-						"MsgType": 'news',
-						"ArticleCount": 1,
-						"Articles": [{
-							"item": {
-								"Title": "欢迎加入沃尔沃",
-								"Description": "我们所做的均以人为中心，因此我们所做的每一次创新都是为了简化和改善您的生活。我们对高效动力、智能人车沟通系统和安全等方面的进步感到骄傲。",
-								"PicUrl": "https://assets.volvocars.com/zh-cn/~/media/china/images/cars/v90cc/landing/20170316/storygrid02marketlaunch_v90cc_bridge_withoutkayak.jpg?w=1266",
-								"Url": "https://www.volvocars.com/zh-cn/cars/new-models/v90-cross-country"
-							}
+				let retMsgJson = {};
+				if (contentMsgInfo.Content === "入职") {
+					retMsgJson = {
+						"xml": {
+							"ToUserName": contentMsgInfo.FromUserName,
+							"FromUserName": contentMsgInfo.ToUserName,
+							"CreateTime": + new Date(),
+							"MsgType": 'news',
+							"ArticleCount": 1,
+							"Articles": [{
+								"item": {
+									"Title": "欢迎加入沃尔沃",
+									"Description": "我们所做的均以人为中心，因此我们所做的每一次创新都是为了简化和改善您的生活。我们对高效动力、智能人车沟通系统和安全等方面的进步感到骄傲。",
+									"PicUrl": "https://assets.volvocars.com/zh-cn/~/media/china/images/cars/v90cc/landing/20170316/storygrid02marketlaunch_v90cc_bridge_withoutkayak.jpg?w=1266",
+									"Url": "http://elemefe.github.io/mint-ui/#/"
+								}
 
-						}]
-					}
-				};
+							}]
+						}
+					};
+				} else {
+					retMsgJson = {
+						"xml": {
+							"ToUserName": contentMsgInfo.FromUserName,
+							"FromUserName": contentMsgInfo.ToUserName,
+							"CreateTime": + new Date(),
+							"MsgType": 'news',
+							"ArticleCount": 1,
+							"Articles": [{
+								"item": {
+									"Title": "收到您的消息",
+									"Description": "随兴所驭，尽揽沿途美景",
+									"PicUrl": "https://assets.volvocars.com/zh-cn/~/media/china/images/cars/v90cc/landing/20170316/v90crosscountry_gallery_02.jpg?w=850",
+									"Url": "https://www.volvocars.com/zh-cn/cars/new-models/v90-cross-country"
+								}
 
+							}]
+						}
+					};
+				}
 				var json2xml = require('json2xml');
 				let retMsgXml = json2xml(retMsgJson);
 				ctx.body = retMsgXml;
