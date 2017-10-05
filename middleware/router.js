@@ -11,8 +11,8 @@ const router = app => {
 		if (sha1 === signature) {
 			ctx.response.body = echostr;
 			app.debug({
-				msg: 'validate success';
-			})
+				msg: 'validate success'
+			});
 			next();
 		} else {
 
